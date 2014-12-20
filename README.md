@@ -12,7 +12,7 @@ This will of course mean you will have to recompile the plugin using maven.<br><
 
 Downloads
 ==========
-Official downloads are [here](https://github.com/ProxyConn/UntamedChat/releases).
+Official downloads are [here](http://www.spigotmc.org/resources/untamedchat.2520/).
 
 Multi-Bungee Info
 ==================

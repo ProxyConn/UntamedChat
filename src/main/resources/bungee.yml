@@ -1,0 +1,5 @@
+name: UntamedChat
+main: net.portalblock.untamedchat.bungee.UntamedChat
+version: 1.0
+author: portalBlock
+softdepends: ["RedisBungee", "ProxyConn"]

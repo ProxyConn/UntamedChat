@@ -1,7 +1,7 @@
 UntamedChat
 ============
 [![Build Status](https://travis-ci.org/ProxyConn/UntamedChat.svg)](https://travis-ci.org/ProxyConn/UntamedChat)
-UntamedChat is a simple to use plugin that has support for ProxyConn and RedisBungee or standalone setups. <br>
+<br>UntamedChat is a simple to use plugin that has support for ProxyConn and RedisBungee or standalone setups. <br>
 With automatic integration UntamedChat is as easy to install as dropping a jar file in BungeeCords's plugins folder.<br><br>
 
 Configuration

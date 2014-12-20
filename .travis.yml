@@ -1,0 +1,15 @@
+language: java
+jdk:
+  - oraclejdk7
+notifications:
+  email: false
+install: mvn clean package install
+deploy:
+    provider: releases
+    api-key: "$GITHUB_OATH_TOKEN"
+    file:
+        - "target/UntamedChat.jar"
+    skip_cleanup: true
+    on:
+        tags: true
+        all_branches: true

@@ -7,6 +7,8 @@
 
 package net.portalblock.untamedchat.bungee.providers;
 
+import java.util.UUID;
+
 /**
  * Created by portalBlock on 12/18/2014.
  */
@@ -17,6 +19,10 @@ public interface Provider {
     public void sendMessage(String sender, String target, String msg);
 
     public void sendGlobalChat(String msg);
+
+    public void setGlobalMode(UUID player, boolean mode);
+
+    public boolean isGlobalMode(UUID player);
 
     public String getReply(String name);
 

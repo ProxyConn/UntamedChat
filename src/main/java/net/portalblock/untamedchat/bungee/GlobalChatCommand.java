@@ -7,7 +7,9 @@
 
 package net.portalblock.untamedchat.bungee;
 
+import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.portalblock.untamedchat.bungee.providers.Provider;
@@ -16,6 +18,9 @@ import net.portalblock.untamedchat.bungee.providers.Provider;
  * Created by portalBlock on 12/19/2014.
  */
 public class GlobalChatCommand extends Command {
+
+    private static final String TO_TRUE = "&aYou have entered global chat mode!";
+    private static final String TO_FALSE = "&cYou have exited global chat mode!";
 
     private Provider provider;
 
@@ -26,6 +31,17 @@ public class GlobalChatCommand extends Command {
 
     @Override
     public void execute(CommandSender sender, String[] strings) {
+        if(strings.length == 0){
+            if(!(sender instanceof ProxiedPlayer)){
+                sender.sendMessage(TextComponent.fromLegacyText(ChatColor.RED + "Only players may toggle global chat mode."));
+                return;
+            }
+            ProxiedPlayer player = (ProxiedPlayer) sender;
+            boolean currMode = provider.isGlobalMode(player.getUniqueId());
+            provider.setGlobalMode(player.getUniqueId(), !currMode);
+            sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', (currMode ? TO_TRUE : TO_FALSE))));
+            return;
+        }
         StringBuilder builder = new StringBuilder();
         for(String s : strings){
             builder.append(s);

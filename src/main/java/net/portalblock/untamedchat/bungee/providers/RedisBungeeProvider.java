@@ -30,9 +30,12 @@ public class RedisBungeeProvider implements Provider, Listener {
     private RedisBungeeAPI api = RedisBungee.getApi();
 
     private HashMap<String, String> lastMessages = new HashMap<String, String>();
+    private HashMap<UUID, Boolean> globalChat = new HashMap<UUID, Boolean>();
 
     public RedisBungeeProvider(){
         api.registerPubSubChannels(UntamedChat.MSG_CHANNEL);
+        api.registerPubSubChannels(UntamedChat.GBLCHT_CHANNEL);
+        api.registerPubSubChannels(UntamedChat.TOG_CHANNEL);
         ProxyServer.getInstance().getPluginManager().registerListener(UntamedChat.getInstance(), this);
     }
 
@@ -77,6 +80,25 @@ public class RedisBungeeProvider implements Provider, Listener {
             JSONObject jsonObject = new JSONObject(e.getMessage());
             for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
                 p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', jsonObject.getString("msg"))));
+        }else if(e.getChannel().equals(UntamedChat.TOG_CHANNEL)){
+            JSONObject msg = new JSONObject(e.getMessage());
+            if(msg.getString("type").equals("chat"))
+                globalChat.put(UUID.fromString(msg.getString("uuid")), msg.getBoolean("mode"));
         }
+    }
+
+    @Override
+    public void setGlobalMode(UUID player, boolean mode) {
+        JSONObject msg = new JSONObject();
+        msg.put("type", "chat");
+        msg.put("uuid", player.toString());
+        msg.put("mode", mode);
+        api.sendChannelMessage(UntamedChat.TOG_CHANNEL, msg.toString());
+    }
+
+    @Override
+    public boolean isGlobalMode(UUID player) {
+        if(!globalChat.containsKey(player)) setGlobalMode(player, false);
+        return globalChat.get(player);
     }
 }

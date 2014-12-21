@@ -23,6 +23,7 @@ public class UntamedChat extends Plugin {
 
     public static final String MSG_CHANNEL = "uc_messaging";
     public static final String GBLCHT_CHANNEL = "uc_global-chat";
+    public static final String TOG_CHANNEL = "uc_toggle";
 
     private static UntamedChat instance;
 
@@ -39,6 +40,8 @@ public class UntamedChat extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new MsgCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider));
+
+        getProxy().getPluginManager().registerListener(this, new GeneralListener(provider));
     }
 
     private void setProvider(){

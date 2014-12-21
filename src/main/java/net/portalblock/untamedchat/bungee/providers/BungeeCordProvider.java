@@ -13,6 +13,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * Created by portalBlock on 12/19/2014.
@@ -22,6 +23,7 @@ public class BungeeCordProvider implements Provider {
     private ProxyServer proxy;
 
     private HashMap<String, String> lastMessages = new HashMap<String, String>();
+    private HashMap<UUID, Boolean> globalChat = new HashMap<UUID, Boolean>();
 
     public BungeeCordProvider(ProxyServer proxy) {
         this.proxy = proxy;
@@ -50,5 +52,16 @@ public class BungeeCordProvider implements Provider {
     @Override
     public String getReply(String name) {
         return lastMessages.get(name.toLowerCase());
+    }
+
+    @Override
+    public void setGlobalMode(UUID player, boolean mode) {
+        globalChat.put(player, mode);
+    }
+
+    @Override
+    public boolean isGlobalMode(UUID player) {
+        if(!globalChat.containsKey(player)) setGlobalMode(player, false);
+        return globalChat.get(player);
     }
 }

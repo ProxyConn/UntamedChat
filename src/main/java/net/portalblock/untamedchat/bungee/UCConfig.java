@@ -29,12 +29,15 @@ public class UCConfig {
     static {
         final String NEW_LINE = System.getProperty("line.separator");
         File cfgDir = new File("plugins/UntamedChat");
-        if(!cfgDir.exists() && cfgDir.isDirectory()){
+        if(!cfgDir.exists()){
+            UntamedChat.getInstance().getLogger().info("No config directory found, generating one now!");
             cfgDir.mkdir();
         }
         File configFile = new File(cfgDir + "/config.json");
         if(!configFile.exists()){
+            UntamedChat.getInstance().getLogger().info("No config file found, generating one now!");
             try{
+                configFile.createNewFile();
                 InputStream is = UCConfig.class.getResourceAsStream("/config.json");
                 String line;
                 if(is == null) throw new NullPointerException("is");

@@ -25,7 +25,7 @@ public class GlobalChatCommand extends Command {
     private Provider provider;
 
     public GlobalChatCommand(Provider provider) {
-        super("globalchat", "untamedchat.globalchat", "g", "global");
+        super(UCConfig.getRootForGlobal(), "untamedchat.globalchat", UCConfig.getGlobalAliases());
         this.provider = provider;
     }
 

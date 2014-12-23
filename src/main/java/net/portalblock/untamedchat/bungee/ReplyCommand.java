@@ -22,7 +22,7 @@ public class ReplyCommand extends Command {
     private Provider provider;
 
     public ReplyCommand(Provider provider){
-        super("reply", "untamedchat.reply", "r");
+        super(UCConfig.getRootForReply(), "untamedchat.reply", UCConfig.getReplyAliases());
         this.provider = provider;
     }
 

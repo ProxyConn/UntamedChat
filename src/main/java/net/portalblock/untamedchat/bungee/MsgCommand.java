@@ -22,7 +22,7 @@ public class MsgCommand extends Command {
     private Provider provider;
 
     public MsgCommand(Provider provider) {
-        super("msg", "untamedchat.msg", "m");
+        super(UCConfig.getRootForMsg(), "untamedchat.msg", UCConfig.getMsgAliases());
         this.provider = provider;
     }
 

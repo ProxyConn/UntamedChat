@@ -35,7 +35,6 @@
             <groupId>net.portalblock</groupId>
             <artifactId>PublicAPI</artifactId>
             <version>0.4-SNAPSHOT</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.imaginarycode.minecraft</groupId>

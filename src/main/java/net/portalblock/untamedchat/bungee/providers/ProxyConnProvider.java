@@ -8,18 +8,19 @@
 package net.portalblock.untamedchat.bungee.providers;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.portalblock.pc.publicapi.API;
 import net.portalblock.pc.publicapi.APIAccess;
+import net.portalblock.pc.publicapi.NetworkPlayer;
 import net.portalblock.pc.publicapi.PluginMessageHandler;
 import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by portalBlock on 12/18/2014.
@@ -93,5 +94,21 @@ public class ProxyConnProvider implements Provider, PluginMessageHandler {
     public boolean isGlobalMode(UUID player) {
         if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
+    }
+
+    @Override
+    public Collection<String> getAllPlayerNames(String[] args) {
+        Set<String> matches = new HashSet<String>();
+        if (args.length >= 1){
+            String search = args[args.length-1].toLowerCase();
+            for(NetworkPlayer user : api.getAllPlayers()){
+                if(user.getName().toLowerCase().startsWith(search.toLowerCase())){
+                    matches.add(user.getName());
+                }
+            }
+        }else{
+            for(NetworkPlayer user : api.getAllPlayers()) matches.add(user.getName());
+        }
+        return matches;
     }
 }

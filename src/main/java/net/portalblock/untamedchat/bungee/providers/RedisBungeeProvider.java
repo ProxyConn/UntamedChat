@@ -16,12 +16,12 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.portalblock.pc.publicapi.NetworkPlayer;
 import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
 import org.json.JSONObject;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by portalBlock on 12/18/2014.
@@ -101,5 +101,21 @@ public class RedisBungeeProvider implements Provider, Listener {
     public boolean isGlobalMode(UUID player) {
         if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
+    }
+
+    @Override
+    public Collection<String> getAllPlayerNames(String[] args) {
+        Set<String> matches = new HashSet<String>();
+        if (args.length >= 1){
+            String search = args[args.length-1].toLowerCase();
+            for(String s : api.getHumanPlayersOnline()){
+                if(s.toLowerCase().startsWith(search.toLowerCase())){
+                    matches.add(s);
+                }
+            }
+        }else{
+            for(String s : api.getHumanPlayersOnline()) matches.add(s);
+        }
+        return matches;
     }
 }

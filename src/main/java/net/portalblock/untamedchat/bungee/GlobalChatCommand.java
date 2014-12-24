@@ -12,12 +12,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
  * Created by portalBlock on 12/19/2014.
  */
-public class GlobalChatCommand extends Command {
+public class GlobalChatCommand extends Command implements TabExecutor {
 
     private static final String TO_TRUE = "&aYou have entered global chat mode!";
     private static final String TO_FALSE = "&cYou have exited global chat mode!";
@@ -61,5 +62,10 @@ public class GlobalChatCommand extends Command {
         }
         msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, msg, server, sender.getName(), null);
         provider.sendGlobalChat(msg);
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+        return provider.getAllPlayerNames(strings);
     }
 }

@@ -13,8 +13,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.portalblock.untamedchat.bungee.UCConfig;
 
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by portalBlock on 12/19/2014.
@@ -64,5 +63,21 @@ public class BungeeCordProvider implements Provider {
     public boolean isGlobalMode(UUID player) {
         if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
+    }
+
+    @Override
+    public Collection<String> getAllPlayerNames(String[] args) {
+        Set<String> matches = new HashSet<String>();
+        if (args.length >= 1){
+            String search = args[args.length-1].toLowerCase();
+            for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()){
+                if(player.getName().toLowerCase().startsWith(search.toLowerCase())){
+                    matches.add(player.getName());
+                }
+            }
+        }else{
+            for(ProxiedPlayer player : ProxyServer.getInstance().getPlayers()) matches.add(player.getName());
+        }
+        return matches;
     }
 }

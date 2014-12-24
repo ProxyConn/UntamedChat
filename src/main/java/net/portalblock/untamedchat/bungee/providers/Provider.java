@@ -7,6 +7,7 @@
 
 package net.portalblock.untamedchat.bungee.providers;
 
+import java.util.Collection;
 import java.util.UUID;
 
 /**
@@ -25,5 +26,7 @@ public interface Provider {
     public boolean isGlobalMode(UUID player);
 
     public String getReply(String name);
+
+    public Collection<String> getAllPlayerNames(String[] args);
 
 }

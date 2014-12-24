@@ -12,12 +12,13 @@ import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
+import net.md_5.bungee.api.plugin.TabExecutor;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
  * Created by portalBlock on 12/19/2014.
  */
-public class ReplyCommand extends Command {
+public class ReplyCommand extends Command implements TabExecutor{
 
     private Provider provider;
 
@@ -54,5 +55,10 @@ public class ReplyCommand extends Command {
         mg = ChatColor.translateAlternateColorCodes('&', mg);
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', mg)));
 
+    }
+
+    @Override
+    public Iterable<String> onTabComplete(CommandSender commandSender, String[] strings) {
+        return provider.getAllPlayerNames(strings);
     }
 }

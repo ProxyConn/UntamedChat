@@ -11,6 +11,7 @@ import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
+import net.portalblock.untamedchat.bungee.UCConfig;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -61,7 +62,7 @@ public class BungeeCordProvider implements Provider {
 
     @Override
     public boolean isGlobalMode(UUID player) {
-        if(!globalChat.containsKey(player)) setGlobalMode(player, false);
+        if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
     }
 }

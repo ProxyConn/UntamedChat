@@ -16,6 +16,7 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
 import org.json.JSONObject;
 
@@ -98,7 +99,7 @@ public class RedisBungeeProvider implements Provider, Listener {
 
     @Override
     public boolean isGlobalMode(UUID player) {
-        if(!globalChat.containsKey(player)) setGlobalMode(player, false);
+        if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
     }
 }

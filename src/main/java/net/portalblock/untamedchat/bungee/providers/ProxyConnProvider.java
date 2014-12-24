@@ -14,6 +14,7 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.portalblock.pc.publicapi.API;
 import net.portalblock.pc.publicapi.APIAccess;
 import net.portalblock.pc.publicapi.PluginMessageHandler;
+import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
 import org.json.JSONObject;
 
@@ -90,7 +91,7 @@ public class ProxyConnProvider implements Provider, PluginMessageHandler {
 
     @Override
     public boolean isGlobalMode(UUID player) {
-        if(!globalChat.containsKey(player)) setGlobalMode(player, false);
+        if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
     }
 }

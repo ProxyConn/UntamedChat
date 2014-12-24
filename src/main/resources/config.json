@@ -2,6 +2,7 @@
   "target_format": "&c{sender} &7-> &cMe&7: {msg}",
   "sender_format": "&cMe &7-> &c{target}&7: {msg}",
   "global_format": "&7[&c{server}&7] [&c{sender}&7]: {msg}",
+  "global_chat_default": false,
   "commands": {
     "global_chat": [
       "globalchat",

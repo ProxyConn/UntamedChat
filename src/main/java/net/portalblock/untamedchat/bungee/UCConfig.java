@@ -26,6 +26,8 @@ public class UCConfig {
     private static String[] replyAliases;
     private static String[] globalAliases;
 
+    private static boolean gcDefault;
+
     static {
         final String NEW_LINE = System.getProperty("line.separator");
         File cfgDir = new File("plugins/UntamedChat");
@@ -65,6 +67,7 @@ public class UCConfig {
             TARGET_FORMAT = config.optString("target_format", "&6{sender} &7-> &6Me&7: {msg}");
             SENDER_FORMAT = config.optString("sender_format", "&6Me &7-> &6{target}&7: {msg}");
             GLOBAL_FORMAT = config.optString("global_format", "&7[&6{server}&7] [&6{sender}&7]: &r{msg}");
+            gcDefault = config.optBoolean("global_chat_default", false);
             JSONObject commands = config.optJSONObject("commands");
             if(commands == null){
                 msgAliases = new String[]{"msg", "m"};
@@ -119,5 +122,9 @@ public class UCConfig {
 
     public static String[] getGlobalAliases() {
         return globalAliases;
+    }
+
+    public static boolean isGcDefault() {
+        return gcDefault;
     }
 }

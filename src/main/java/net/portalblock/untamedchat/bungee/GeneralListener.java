@@ -7,6 +7,8 @@
 
 package net.portalblock.untamedchat.bungee;
 
+import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
@@ -36,6 +38,11 @@ public class GeneralListener implements Listener {
         if(!(e.getSender() instanceof ProxiedPlayer)) return;
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
         if(e.isCommand() || !provider.isGlobalMode(player.getUniqueId())) return;
+        if(CooldownManager.onChat(player)){
+            player.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', UCConfig.SPAM_MESSAGE)));
+            e.setCancelled(true);
+            return;
+        }
         String server = (player.getServer() != null ? player.getServer().getInfo().getName() : null);
         String msg = e.getMessage();
         msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, msg, server, player.getName(), null);

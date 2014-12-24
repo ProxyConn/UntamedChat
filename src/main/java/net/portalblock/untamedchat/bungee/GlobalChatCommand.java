@@ -42,6 +42,13 @@ public class GlobalChatCommand extends Command {
             sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', (!currMode ? TO_TRUE : TO_FALSE))));
             return;
         }
+        if(sender instanceof ProxiedPlayer){
+            ProxiedPlayer p = (ProxiedPlayer) sender;
+            if(CooldownManager.onChat(p)){
+                p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', UCConfig.SPAM_MESSAGE)));
+                return;
+            }
+        }
         StringBuilder builder = new StringBuilder();
         for(String s : strings){
             builder.append(s);

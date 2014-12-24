@@ -39,7 +39,7 @@ public class GlobalChatCommand extends Command {
             ProxiedPlayer player = (ProxiedPlayer) sender;
             boolean currMode = provider.isGlobalMode(player.getUniqueId());
             provider.setGlobalMode(player.getUniqueId(), !currMode);
-            sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', (currMode ? TO_TRUE : TO_FALSE))));
+            sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', (!currMode ? TO_TRUE : TO_FALSE))));
             return;
         }
         StringBuilder builder = new StringBuilder();

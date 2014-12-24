@@ -27,7 +27,7 @@ public class UCConfig {
     private static String[] replyAliases;
     private static String[] globalAliases;
 
-    private static boolean gcDefault;
+    private static boolean gcDefault, chatCoolDowns;
     private static long chatCooldown;
 
     static {
@@ -70,6 +70,7 @@ public class UCConfig {
             SENDER_FORMAT = config.optString("sender_format", "&6Me &7-> &6{target}&7: {msg}");
             GLOBAL_FORMAT = config.optString("global_format", "&7[&6{server}&7] [&6{sender}&7]: &r{msg}");
             gcDefault = config.optBoolean("global_chat_default", false);
+            chatCoolDowns = config.optBoolean("enable_chat_cooldown", true);
             chatCooldown = config.optLong("chat_cooldown", 10);
             SPAM_MESSAGE = config.optString("spam_message", "&7[&cUntamedChat&7] &cDon't spam the chat!");
             JSONObject commands = config.optJSONObject("commands");
@@ -134,5 +135,9 @@ public class UCConfig {
 
     public static long getChatCooldown() {
         return chatCooldown;
+    }
+
+    public static boolean isChatCoolDowns() {
+        return chatCoolDowns;
     }
 }

@@ -36,6 +36,7 @@ public class CooldownManager {
     }
 
     public static boolean onChat(ProxiedPlayer player){
+        if(!UCConfig.isChatCoolDowns()) return false;
         if(coolCheck(player)) {
             chatCooldown.put(player.getName(),
                     System.currentTimeMillis());

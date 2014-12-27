@@ -45,6 +45,9 @@ public class GeneralListener implements Listener {
         }
         String server = (player.getServer() != null ? player.getServer().getInfo().getName() : null);
         String msg = e.getMessage();
+        if(!player.hasPermission("untamedchat.color")){
+            msg = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', msg));
+        }
         msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, msg, server, player.getName(), null);
         provider.sendGlobalChat(msg);
         e.setCancelled(true);

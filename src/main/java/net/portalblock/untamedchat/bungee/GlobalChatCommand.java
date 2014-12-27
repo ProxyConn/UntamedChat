@@ -56,6 +56,9 @@ public class GlobalChatCommand extends Command implements TabExecutor {
             builder.append(" ");
         }
         String msg = builder.toString().trim();
+        if(!sender.hasPermission("untamedchat.color")){
+            msg = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', msg));
+        }
         String server = "CONSOLE";
         if(sender instanceof ProxiedPlayer){
             server = (((ProxiedPlayer)sender).getServer() != null ? ((ProxiedPlayer)sender).getServer().getInfo().getName() : null);

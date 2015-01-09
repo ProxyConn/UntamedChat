@@ -5,7 +5,7 @@
  * Any changes merged with this project are property of the copyright holder but may include the author's name.
  */
 
-package net.portalblock.untamedchat.bungee;
+package net.portalblock.untamedchat.bungee.commands;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -13,6 +13,8 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
+import net.portalblock.untamedchat.bungee.CooldownManager;
+import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**

@@ -8,13 +8,13 @@
 package net.portalblock.untamedchat.bungee;
 
 import net.md_5.bungee.api.plugin.Plugin;
+import net.portalblock.untamedchat.bungee.commands.GlobalChatCommand;
+import net.portalblock.untamedchat.bungee.commands.MsgCommand;
+import net.portalblock.untamedchat.bungee.commands.ReplyCommand;
 import net.portalblock.untamedchat.bungee.providers.BungeeCordProvider;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 import net.portalblock.untamedchat.bungee.providers.ProxyConnProvider;
 import net.portalblock.untamedchat.bungee.providers.RedisBungeeProvider;
-
-import java.io.File;
-import java.io.IOException;
 
 /**
  * Created by portalBlock on 12/18/2014.

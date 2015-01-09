@@ -31,6 +31,10 @@ public class UCConfig {
     private static long chatCooldown;
 
     static {
+        load();
+    }
+
+    public static void load(){
         final String NEW_LINE = System.getProperty("line.separator");
         File cfgDir = new File("plugins/UntamedChat");
         if(!cfgDir.exists()){

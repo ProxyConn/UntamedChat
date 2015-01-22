@@ -14,6 +14,7 @@ import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.portalblock.untamedchat.bungee.handlers.Handler;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
@@ -22,9 +23,11 @@ import net.portalblock.untamedchat.bungee.providers.Provider;
 public class GeneralListener implements Listener {
 
     private Provider provider;
+    private Handler handler;
 
-    public GeneralListener(Provider provider){
+    public GeneralListener(Provider provider, Handler handler){
         this.provider = provider;
+        this.handler = handler;
     }
 
     @EventHandler
@@ -36,6 +39,13 @@ public class GeneralListener implements Listener {
     @EventHandler
     public void onChat(ChatEvent e){
         if(!(e.getSender() instanceof ProxiedPlayer)) return;
+        if(handler.isMuted((ProxiedPlayer)e.getSender())){
+            e.setCancelled(true);
+            ((ProxiedPlayer) e.getSender()).sendMessage(TextComponent.fromLegacyText(
+                        ChatColor.RED + "[Muted] " +
+                        handler.getMuteReason((ProxiedPlayer)e.getSender()))
+                    );
+        }
         ProxiedPlayer player = (ProxiedPlayer) e.getSender();
         if(e.isCommand() || !provider.isGlobalMode(player.getUniqueId())) return;
         if(CooldownManager.onChat(player)){

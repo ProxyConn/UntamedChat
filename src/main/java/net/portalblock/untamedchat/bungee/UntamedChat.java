@@ -11,6 +11,9 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.portalblock.untamedchat.bungee.commands.GlobalChatCommand;
 import net.portalblock.untamedchat.bungee.commands.MsgCommand;
 import net.portalblock.untamedchat.bungee.commands.ReplyCommand;
+import net.portalblock.untamedchat.bungee.handlers.BATHandler;
+import net.portalblock.untamedchat.bungee.handlers.Handler;
+import net.portalblock.untamedchat.bungee.handlers.NullHandler;
 import net.portalblock.untamedchat.bungee.providers.BungeeCordProvider;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 import net.portalblock.untamedchat.bungee.providers.ProxyConnProvider;
@@ -32,16 +35,22 @@ public class UntamedChat extends Plugin {
     }
 
     private Provider provider;
+    private Handler handler;
 
     @Override
     public void onEnable() {
         instance = this;
         setProvider();
+        setHandler();
         getProxy().getPluginManager().registerCommand(this, new MsgCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider));
 
-        getProxy().getPluginManager().registerListener(this, new GeneralListener(provider));
+        getProxy().getPluginManager().registerListener(this, new GeneralListener(provider, handler));
+    }
+
+    public void updateHandler(Handler handler){
+        this.handler = handler;
     }
 
     private void setProvider(){
@@ -54,5 +63,13 @@ public class UntamedChat extends Plugin {
             return;
         }
         provider = new BungeeCordProvider(getProxy());
+    }
+
+    private void setHandler(){
+        if(getProxy().getPluginManager().getPlugin("BungeeAdminTools") != null){
+            handler = new BATHandler(getProxy().getPluginManager().getPlugin("BungeeAdminTools"));
+        }else{
+            handler = new NullHandler();
+        }
     }
 }

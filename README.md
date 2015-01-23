@@ -6,9 +6,8 @@ With automatic integration UntamedChat is as easy to install as dropping a jar f
 
 Configuration
 ==============
-If your not happy with the default formatting or behavior of UntamedChat you are able to change settings in the
-[UCConfig](src/main/java/net/portalblock/untamedchat/bungee/UCConfig.java) file.
-This will of course mean you will have to recompile the plugin using maven.<br><br>
+You can configure a large amount of things in the config.json file (plugins/UntamedChat/config.json). This includes setting
+aliases for commands, default behaviour, spam messages/cooldowns and chat formatting.<br><br>
 
 Downloads
 ==========

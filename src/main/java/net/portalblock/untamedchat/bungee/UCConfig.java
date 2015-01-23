@@ -102,6 +102,7 @@ public class UCConfig {
     }
 
     public static String compileMessage(String format, String msg, String server, String sender, String target){
+        msg = msg.replace("$", "\\$");
         return format
                 .replaceAll("\\{server\\}", (server != null ? server : ""))
                 .replaceAll("\\{sender\\}", (sender != null ? sender : ""))

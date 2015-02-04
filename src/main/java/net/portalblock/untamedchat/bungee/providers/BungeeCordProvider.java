@@ -25,6 +25,7 @@ public class BungeeCordProvider implements Provider {
 
     private HashMap<String, String> lastMessages = new HashMap<String, String>();
     private HashMap<UUID, Boolean> globalChat = new HashMap<UUID, Boolean>();
+    private HashMap<UUID, Boolean> spying = new HashMap<UUID, Boolean>();
 
     public BungeeCordProvider(ProxyServer proxy) {
         this.proxy = proxy;
@@ -39,14 +40,27 @@ public class BungeeCordProvider implements Provider {
     public void sendMessage(Message message) {
         switch (message.getTarget().getKind()) {
             case GLOBAL:
-                for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
-                    p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                String msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, message.getMessage(), message.getServer(), message.getSender(), null);
+                for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers()) {
+                    p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', msg)));
+                }
                 break;
             case PLAYER:
                 ProxiedPlayer t = proxy.getPlayer(message.getTarget().getTarget());
                 if(t != null){
                     lastMessages.put(t.getName().toLowerCase(), message.getSender());
-                    t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                    String trgtMsg = UCConfig.compileMessage(UCConfig.TARGET_FORMAT, message.getMessage(), message.getServer(), message.getSender(), message.getTarget().getTarget());
+                    t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', trgtMsg)));
+
+                    String ssMsg = UCConfig.compileMessage(UCConfig.SOCIAL_SPY_FORMAT, message.getMessage(), "", message.getSender(), message.getTarget().getTarget());
+                    for (Map.Entry<UUID, Boolean> entry : spying.entrySet()) {
+                        if (entry.getValue()) {
+                            ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(entry.getKey());
+
+                            if (player1 != null)
+                                player1.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', ssMsg)));
+                        }
+                    }
                 }
                 break;
         }
@@ -66,6 +80,17 @@ public class BungeeCordProvider implements Provider {
     public boolean isGlobalMode(UUID player) {
         if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
         return globalChat.get(player);
+    }
+
+    @Override
+    public void setSpying(UUID player, boolean mode) {
+        spying.put(player, mode);
+    }
+
+    @Override
+    public boolean isSpying(UUID player) {
+        if(!spying.containsKey(player)) setSpying(player, UCConfig.isSpDefault());
+        return spying.get(player);
     }
 
     @Override

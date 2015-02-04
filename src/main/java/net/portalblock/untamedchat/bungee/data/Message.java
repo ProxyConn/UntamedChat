@@ -6,13 +6,13 @@ public class Message {
     private final String sender;
     private final Target target;
     private final String message;
-    private final String formattedMessage;
+    private final String server;
 
-    public Message(String sender, Target target, String message, String formattedMessage) {
+    public Message(String sender, Target target, String message, String server) {
         this.sender = sender;
         this.target = target;
         this.message = message;
-        this.formattedMessage = formattedMessage;
+        this.server = server;
     }
 
     public String getSender() {
@@ -27,8 +27,8 @@ public class Message {
         return message;
     }
 
-    public String getFormattedMessage() {
-        return formattedMessage;
+    public String getServer() {
+        return server;
     }
 
     public JSONObject serialize() {
@@ -36,7 +36,7 @@ public class Message {
         object.put("sender", sender);
         object.put("target", target.serialize());
         object.put("message", message);
-        object.put("formatted", formattedMessage);
+        object.put("server", server);
         return object;
     }
 
@@ -44,7 +44,7 @@ public class Message {
         String sender = object.getString("sender");
         Target target = Target.fromJSONObject(object.getJSONObject("target"));
         String message = object.getString("message");
-        String formatted = object.getString("formatted");
-        return new Message(sender, target, message, formatted);
+        String server = object.getString("server");
+        return new Message(sender, target, message, server);
     }
 }

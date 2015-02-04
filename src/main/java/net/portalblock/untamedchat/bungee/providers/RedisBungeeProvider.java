@@ -32,6 +32,7 @@ public class RedisBungeeProvider implements Provider, Listener {
 
     private HashMap<String, String> lastMessages = new HashMap<String, String>();
     private HashMap<UUID, Boolean> globalChat = new HashMap<UUID, Boolean>();
+    private HashMap<UUID, Boolean> spying = new HashMap<UUID, Boolean>();
 
     public RedisBungeeProvider(){
         api.registerPubSubChannels(UntamedChat.GBL_CHANNEL);
@@ -62,14 +63,26 @@ public class RedisBungeeProvider implements Provider, Listener {
             Message message = Message.fromJSONObject(new JSONObject(e.getMessage()));
             switch (message.getTarget().getKind()) {
                 case GLOBAL:
+                    String msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, message.getMessage(), message.getServer(), message.getSender(), null);
                     for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
-                        p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                        p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', msg)));
                     break;
                 case PLAYER:
                     ProxiedPlayer t = ProxyServer.getInstance().getPlayer(message.getTarget().getTarget());
                     if(t != null){
+                        String trgtMsg = UCConfig.compileMessage(UCConfig.TARGET_FORMAT, message.getMessage(), message.getServer(), message.getSender(), message.getTarget().getTarget());
                         lastMessages.put(t.getName().toLowerCase(), message.getSender());
-                        t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                        t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', trgtMsg)));
+
+                        String ssMsg = UCConfig.compileMessage(UCConfig.SOCIAL_SPY_FORMAT, message.getMessage(), "", message.getSender(), message.getTarget().getTarget());
+                        for (Map.Entry<UUID, Boolean> entry : spying.entrySet()) {
+                            if (entry.getValue()) {
+                                ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(entry.getKey());
+
+                                if (player1 != null)
+                                    player1.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', ssMsg)));
+                            }
+                        }
                     }
                     break;
             }
@@ -77,6 +90,8 @@ public class RedisBungeeProvider implements Provider, Listener {
             JSONObject msg = new JSONObject(e.getMessage());
             if(msg.getString("type").equals("chat"))
                 globalChat.put(UUID.fromString(msg.getString("uuid")), msg.getBoolean("mode"));
+            else if(msg.getString("type").equals("spy"))
+                spying.put(UUID.fromString(msg.getString("uuid")), msg.getBoolean("mode"));
         }
     }
 
@@ -98,6 +113,26 @@ public class RedisBungeeProvider implements Provider, Listener {
             return UCConfig.isGcDefault();
         }
         return globalChat.get(player);
+    }
+
+    @Override
+    public void setSpying(UUID player, boolean mode) {
+        JSONObject msg = new JSONObject();
+        msg.put("type", "spy");
+        msg.put("uuid", player.toString());
+        msg.put("mode", mode);
+        api.sendChannelMessage(UntamedChat.TOG_CHANNEL, msg.toString());
+    }
+
+    @Override
+    public boolean isSpying(UUID player) {
+        if(!spying.containsKey(player)) {
+            setSpying(player, UCConfig.isSpDefault());
+            // Although the change will eventually apply, it will not as the message is delivered asynchronously.
+            // Return the intended value here instead.
+            return UCConfig.isSpDefault();
+        }
+        return spying.get(player);
     }
 
     @Override

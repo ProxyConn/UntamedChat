@@ -14,6 +14,8 @@ import net.md_5.bungee.api.event.ChatEvent;
 import net.md_5.bungee.api.event.PostLoginEvent;
 import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
+import net.portalblock.untamedchat.bungee.data.Message;
+import net.portalblock.untamedchat.bungee.data.Target;
 import net.portalblock.untamedchat.bungee.handlers.Handler;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
@@ -54,12 +56,12 @@ public class GeneralListener implements Listener {
             return;
         }
         String server = (player.getServer() != null ? player.getServer().getInfo().getName() : null);
-        String msg = e.getMessage();
+        String preprocessed = e.getMessage();
         if(!player.hasPermission("untamedchat.color")){
-            msg = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', msg));
+            preprocessed = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', preprocessed));
         }
-        msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, msg, server, player.getName(), null);
-        provider.sendGlobalChat(msg);
+        String formatted = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, preprocessed, server, player.getName(), null);
+        provider.sendMessage(new Message(player.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, formatted));
         e.setCancelled(true);
     }
 

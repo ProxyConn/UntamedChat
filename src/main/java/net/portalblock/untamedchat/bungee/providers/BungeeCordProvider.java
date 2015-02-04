@@ -12,6 +12,7 @@ import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.portalblock.untamedchat.bungee.UCConfig;
+import net.portalblock.untamedchat.bungee.data.Message;
 
 import java.util.*;
 
@@ -35,18 +36,20 @@ public class BungeeCordProvider implements Provider {
     }
 
     @Override
-    public void sendMessage(String sender, String target, String msg) {
-        ProxiedPlayer t = proxy.getPlayer(target);
-        if(t != null){
-            lastMessages.put(target.toLowerCase(), sender);
-            t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', msg)));
+    public void sendMessage(Message message) {
+        switch (message.getTarget().getKind()) {
+            case GLOBAL:
+                for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
+                    p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                break;
+            case PLAYER:
+                ProxiedPlayer t = proxy.getPlayer(message.getTarget().getTarget());
+                if(t != null){
+                    lastMessages.put(t.getName().toLowerCase(), message.getSender());
+                    t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                }
+                break;
         }
-    }
-
-    @Override
-    public void sendGlobalChat(String msg) {
-        for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
-            p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', msg)));
     }
 
     @Override

@@ -14,6 +14,8 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import net.portalblock.untamedchat.bungee.UCConfig;
+import net.portalblock.untamedchat.bungee.data.Message;
+import net.portalblock.untamedchat.bungee.data.Target;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
@@ -51,7 +53,7 @@ public class ReplyCommand extends Command implements TabExecutor{
         }
         String mg = UCConfig.compileMessage(UCConfig.TARGET_FORMAT, msg, server, sender.getName(), targetName);
         mg = ChatColor.translateAlternateColorCodes('&', mg);
-        provider.sendMessage(sender.getName(), targetName, mg);
+        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.PLAYER, targetName), msg, mg));
         mg = UCConfig.compileMessage(UCConfig.SENDER_FORMAT, msg, server, sender.getName(), targetName);
         mg = ChatColor.translateAlternateColorCodes('&', mg);
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', mg)));

@@ -18,6 +18,7 @@ import net.md_5.bungee.api.plugin.Listener;
 import net.md_5.bungee.event.EventHandler;
 import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
+import net.portalblock.untamedchat.bungee.data.Message;
 import org.json.JSONObject;
 
 import java.util.*;
@@ -33,8 +34,7 @@ public class RedisBungeeProvider implements Provider, Listener {
     private HashMap<UUID, Boolean> globalChat = new HashMap<UUID, Boolean>();
 
     public RedisBungeeProvider(){
-        api.registerPubSubChannels(UntamedChat.MSG_CHANNEL);
-        api.registerPubSubChannels(UntamedChat.GBLCHT_CHANNEL);
+        api.registerPubSubChannels(UntamedChat.GBL_CHANNEL);
         api.registerPubSubChannels(UntamedChat.TOG_CHANNEL);
         ProxyServer.getInstance().getPluginManager().registerListener(UntamedChat.getInstance(), this);
     }
@@ -47,19 +47,8 @@ public class RedisBungeeProvider implements Provider, Listener {
     }
 
     @Override
-    public void sendMessage(String sender, String target, String msg) {
-        JSONObject m = new JSONObject();
-        m.put("sender", sender);
-        m.put("target", target);
-        m.put("msg", msg);
-        api.sendChannelMessage(UntamedChat.MSG_CHANNEL, m.toString());
-    }
-
-    @Override
-    public void sendGlobalChat(String msg) {
-        JSONObject m = new JSONObject();
-        m.put("msg", msg);
-        api.sendChannelMessage(UntamedChat.GBLCHT_CHANNEL, m.toString());
+    public void sendMessage(Message message) {
+        api.sendChannelMessage(UntamedChat.GBL_CHANNEL, message.serialize().toString());
     }
 
     @Override
@@ -69,17 +58,21 @@ public class RedisBungeeProvider implements Provider, Listener {
 
     @EventHandler
     public void onPubSubMessage(PubSubMessageEvent e){
-        if(e.getChannel().equals(UntamedChat.MSG_CHANNEL)) {
-            JSONObject msg = new JSONObject(e.getMessage());
-            lastMessages.put(msg.getString("target").toLowerCase(), msg.getString("sender"));
-            ProxiedPlayer target = ProxyServer.getInstance().getPlayer(msg.getString("target"));
-            if (target != null) {
-                target.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', msg.getString("msg"))));
+        if(e.getChannel().equals(UntamedChat.GBL_CHANNEL)) {
+            Message message = Message.fromJSONObject(new JSONObject(e.getMessage()));
+            switch (message.getTarget().getKind()) {
+                case GLOBAL:
+                    for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
+                        p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                    break;
+                case PLAYER:
+                    ProxiedPlayer t = ProxyServer.getInstance().getPlayer(message.getTarget().getTarget());
+                    if(t != null){
+                        lastMessages.put(t.getName().toLowerCase(), message.getSender());
+                        t.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', message.getFormattedMessage())));
+                    }
+                    break;
             }
-        }else if(e.getChannel().equals(UntamedChat.GBLCHT_CHANNEL)){
-            JSONObject jsonObject = new JSONObject(e.getMessage());
-            for(ProxiedPlayer p : ProxyServer.getInstance().getPlayers())
-                p.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', jsonObject.getString("msg"))));
         }else if(e.getChannel().equals(UntamedChat.TOG_CHANNEL)){
             JSONObject msg = new JSONObject(e.getMessage());
             if(msg.getString("type").equals("chat"))
@@ -98,7 +91,12 @@ public class RedisBungeeProvider implements Provider, Listener {
 
     @Override
     public boolean isGlobalMode(UUID player) {
-        if(!globalChat.containsKey(player)) setGlobalMode(player, UCConfig.isGcDefault());
+        if(!globalChat.containsKey(player)) {
+            setGlobalMode(player, UCConfig.isGcDefault());
+            // Although the change will eventually apply, it will not as the message is delivered asynchronously.
+            // Return the intended value here instead.
+            return UCConfig.isGcDefault();
+        }
         return globalChat.get(player);
     }
 

@@ -7,7 +7,7 @@
 
 package net.portalblock.untamedchat.bungee.providers;
 
-import net.md_5.bungee.api.ChatColor;
+/*import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -20,12 +20,12 @@ import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.UntamedChat;
 import org.json.JSONObject;
 
-import java.util.*;
+import java.util.*;*/
 
 /**
  * Created by portalBlock on 12/18/2014.
  */
-public class ProxyConnProvider implements Provider, PluginMessageHandler {
+public class ProxyConnProvider {}/*implements Provider, PluginMessageHandler {
 
     private API api = APIAccess.getApi();
 
@@ -111,4 +111,4 @@ public class ProxyConnProvider implements Provider, PluginMessageHandler {
         }
         return matches;
     }
-}
+}*/

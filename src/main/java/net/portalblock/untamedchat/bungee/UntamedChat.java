@@ -54,10 +54,10 @@ public class UntamedChat extends Plugin {
     }
 
     private void setProvider(){
-        if(getProxy().getPluginManager().getPlugin("ProxyConn") != null){
+        /*if(getProxy().getPluginManager().getPlugin("ProxyConn") != null){
             provider = new ProxyConnProvider();
             return;
-        }
+        }*/
         if(getProxy().getPluginManager().getPlugin("RedisBungee") != null){
             provider = new RedisBungeeProvider();
             return;

@@ -7,6 +7,8 @@
 
 package net.portalblock.untamedchat.bungee.providers;
 
+import net.portalblock.untamedchat.bungee.data.Message;
+
 import java.util.Collection;
 import java.util.UUID;
 
@@ -17,9 +19,7 @@ public interface Provider {
 
     public boolean isPlayerOnline(String playerName);
 
-    public void sendMessage(String sender, String target, String msg);
-
-    public void sendGlobalChat(String msg);
+    public void sendMessage(Message message);
 
     public void setGlobalMode(UUID player, boolean mode);
 

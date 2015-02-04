@@ -20,6 +20,7 @@ public class UCConfig {
 
     public static String TARGET_FORMAT;
     public static String SENDER_FORMAT;
+    public static String SOCIAL_SPY_FORMAT;
     public static String GLOBAL_FORMAT;
     public static String SPAM_MESSAGE;
 
@@ -72,6 +73,7 @@ public class UCConfig {
             JSONObject config = new JSONObject(configBuilder.toString());
             TARGET_FORMAT = config.optString("target_format", "&6{sender} &7-> &6Me&7: {msg}");
             SENDER_FORMAT = config.optString("sender_format", "&6Me &7-> &6{target}&7: {msg}");
+            SOCIAL_SPY_FORMAT = config.optString("social_spy_format", "{sender} -> {target}: {msg}");
             GLOBAL_FORMAT = config.optString("global_format", "&7[&6{server}&7] [&6{sender}&7]: &r{msg}");
             gcDefault = config.optBoolean("global_chat_default", false);
             chatCoolDowns = config.optBoolean("enable_chat_cooldown", true);

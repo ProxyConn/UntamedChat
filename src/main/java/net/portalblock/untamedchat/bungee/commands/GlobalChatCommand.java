@@ -15,6 +15,8 @@ import net.md_5.bungee.api.plugin.Command;
 import net.md_5.bungee.api.plugin.TabExecutor;
 import net.portalblock.untamedchat.bungee.CooldownManager;
 import net.portalblock.untamedchat.bungee.UCConfig;
+import net.portalblock.untamedchat.bungee.data.Message;
+import net.portalblock.untamedchat.bungee.data.Target;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
@@ -57,16 +59,16 @@ public class GlobalChatCommand extends Command implements TabExecutor {
             builder.append(s);
             builder.append(" ");
         }
-        String msg = builder.toString().trim();
+        String preprocessed = builder.toString().trim();
         if(!sender.hasPermission("untamedchat.color")){
-            msg = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', msg));
+            preprocessed = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', preprocessed));
         }
         String server = "CONSOLE";
         if(sender instanceof ProxiedPlayer){
             server = (((ProxiedPlayer)sender).getServer() != null ? ((ProxiedPlayer)sender).getServer().getInfo().getName() : null);
         }
-        msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, msg, server, sender.getName(), null);
-        provider.sendGlobalChat(msg);
+        String msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, preprocessed, server, sender.getName(), null);
+        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, msg));
     }
 
     @Override

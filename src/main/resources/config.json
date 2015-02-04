@@ -1,6 +1,7 @@
 {
   "target_format": "&c{sender} &7-> &cMe&7: {msg}",
   "sender_format": "&cMe &7-> &c{target}&7: {msg}",
+  "social_spy_format": "{sender} -> {target}: {msg}",
   "global_format": "&7[&c{server}&7] [&c{sender}&7]: {msg}",
   "global_chat_default": false,
   "enable_chat_cooldown": true,

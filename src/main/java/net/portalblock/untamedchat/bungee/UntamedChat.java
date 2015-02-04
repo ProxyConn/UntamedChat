@@ -24,8 +24,7 @@ import net.portalblock.untamedchat.bungee.providers.RedisBungeeProvider;
  */
 public class UntamedChat extends Plugin {
 
-    public static final String MSG_CHANNEL = "uc_messaging";
-    public static final String GBLCHT_CHANNEL = "uc_global-chat";
+    public static final String GBL_CHANNEL = "uc_messages";
     public static final String TOG_CHANNEL = "uc_toggle";
 
     private static UntamedChat instance;

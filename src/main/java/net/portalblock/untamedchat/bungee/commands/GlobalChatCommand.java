@@ -67,8 +67,7 @@ public class GlobalChatCommand extends Command implements TabExecutor {
         if(sender instanceof ProxiedPlayer){
             server = (((ProxiedPlayer)sender).getServer() != null ? ((ProxiedPlayer)sender).getServer().getInfo().getName() : null);
         }
-        String msg = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, preprocessed, server, sender.getName(), null);
-        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, msg));
+        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, server));
     }
 
     @Override

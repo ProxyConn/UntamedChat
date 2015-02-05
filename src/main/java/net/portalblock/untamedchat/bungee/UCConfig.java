@@ -27,8 +27,9 @@ public class UCConfig {
     private static String[] msgAliases;
     private static String[] replyAliases;
     private static String[] globalAliases;
+    private static String[] socialSpyAliases;
 
-    private static boolean gcDefault, chatCoolDowns;
+    private static boolean gcDefault, chatCoolDowns, spDefault;
     private static long chatCooldown;
 
     static {
@@ -77,6 +78,7 @@ public class UCConfig {
             GLOBAL_FORMAT = config.optString("global_format", "&7[&6{server}&7] [&6{sender}&7]: &r{msg}");
             gcDefault = config.optBoolean("global_chat_default", false);
             chatCoolDowns = config.optBoolean("enable_chat_cooldown", true);
+            spDefault = config.optBoolean("social_spy_default", false);
             chatCooldown = config.optLong("chat_cooldown", 10);
             SPAM_MESSAGE = config.optString("spam_message", "&7[&cUntamedChat&7] &cDon't spam the chat!");
             JSONObject commands = config.optJSONObject("commands");
@@ -84,10 +86,12 @@ public class UCConfig {
                 msgAliases = new String[]{"msg", "m"};
                 replyAliases = new String[]{"reply", "r"};
                 globalAliases = new String[]{"globalchat", "global", "g"};
+                socialSpyAliases = new String[]{"socialspy", "sp", "spy"};
             }else{
                 msgAliases = makeCommandArray(commands.optJSONArray("msg"), "msg", "m");
                 replyAliases = makeCommandArray(commands.optJSONArray("reply"), "reply", "r");
                 globalAliases = makeCommandArray(commands.optJSONArray("global_chat"), "globalchat", "global", "g");
+                socialSpyAliases = makeCommandArray(commands.optJSONArray("social_spy"), "socialspy", "sp", "spy");
             }
         }catch(IOException e){
             e.printStackTrace();
@@ -136,6 +140,10 @@ public class UCConfig {
         return globalAliases;
     }
 
+    public static String[] getSocialSpyAliases() {
+        return socialSpyAliases;
+    }
+
     public static boolean isGcDefault() {
         return gcDefault;
     }
@@ -146,5 +154,9 @@ public class UCConfig {
 
     public static boolean isChatCoolDowns() {
         return chatCoolDowns;
+    }
+
+    public static boolean isSpDefault() {
+        return spDefault;
     }
 }

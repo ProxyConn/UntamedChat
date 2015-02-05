@@ -25,6 +25,10 @@ public interface Provider {
 
     public boolean isGlobalMode(UUID player);
 
+    public void setSpying(UUID player, boolean mode);
+
+    public boolean isSpying(UUID player);
+
     public String getReply(String name);
 
     public Collection<String> getAllPlayerNames(String[] args);

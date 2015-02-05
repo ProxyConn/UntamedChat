@@ -11,6 +11,7 @@ import net.md_5.bungee.api.plugin.Plugin;
 import net.portalblock.untamedchat.bungee.commands.GlobalChatCommand;
 import net.portalblock.untamedchat.bungee.commands.MsgCommand;
 import net.portalblock.untamedchat.bungee.commands.ReplyCommand;
+import net.portalblock.untamedchat.bungee.commands.SocialSpyCommand;
 import net.portalblock.untamedchat.bungee.handlers.BATHandler;
 import net.portalblock.untamedchat.bungee.handlers.Handler;
 import net.portalblock.untamedchat.bungee.handlers.NullHandler;
@@ -44,6 +45,7 @@ public class UntamedChat extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new MsgCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider));
+        getProxy().getPluginManager().registerCommand(this, new SocialSpyCommand(provider));
 
         getProxy().getPluginManager().registerListener(this, new GeneralListener(provider, handler));
     }

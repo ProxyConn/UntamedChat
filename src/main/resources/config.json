@@ -4,6 +4,7 @@
   "social_spy_format": "{sender} -> {target}: {msg}",
   "global_format": "&7[&c{server}&7] [&c{sender}&7]: {msg}",
   "global_chat_default": false,
+  "social_spy_default": false,
   "enable_chat_cooldown": true,
   "chat_cooldown": 10,
   "spam_message": "&7[&cUntamedChat&7] &cDon't spam the chat!",
@@ -20,6 +21,11 @@
     "reply": [
       "reply",
       "r"
+    ],
+    "social_spy": [
+      "socialspy",
+      "sp",
+      "spy"
     ]
   }
 }

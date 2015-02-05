@@ -60,8 +60,7 @@ public class GeneralListener implements Listener {
         if(!player.hasPermission("untamedchat.color")){
             preprocessed = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', preprocessed));
         }
-        String formatted = UCConfig.compileMessage(UCConfig.GLOBAL_FORMAT, preprocessed, server, player.getName(), null);
-        provider.sendMessage(new Message(player.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, formatted));
+        provider.sendMessage(new Message(player.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, server));
         e.setCancelled(true);
     }
 

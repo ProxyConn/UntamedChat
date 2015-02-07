@@ -3,7 +3,9 @@ jdk:
   - oraclejdk7
 notifications:
   email: false
-install: mvn clean package install
+install:
+  - ./init.sh
+  - mvn clean package
 deploy:
     provider: releases
     api-key: "$GITHUB_OATH_TOKEN"

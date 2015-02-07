@@ -120,6 +120,10 @@ public class UCConfig {
         return globalAliases[0];
     }
 
+    public static String getRootForSocialSpy(){
+        return socialSpyAliases[0];
+    }
+
     public static String getRootForMsg(){
         return msgAliases[0];
     }

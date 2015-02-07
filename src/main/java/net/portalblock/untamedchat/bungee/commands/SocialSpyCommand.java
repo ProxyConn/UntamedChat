@@ -20,7 +20,7 @@ public class SocialSpyCommand extends Command {
     private Provider provider;
 
     public SocialSpyCommand(Provider provider) {
-        super(UCConfig.getRootForGlobal(), "untamedchat.socialspy", UCConfig.getSocialSpyAliases());
+        super(UCConfig.getRootForSocialSpy(), "untamedchat.socialspy", UCConfig.getSocialSpyAliases());
         this.provider = provider;
     }
 

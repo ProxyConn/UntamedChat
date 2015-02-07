@@ -13,11 +13,11 @@
             <id>bungee-repo</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
-        <!--ProxyConn repo-->
+        <!--ProxyConn repo>
         <repository>
             <id>portalBlock-repo</id>
             <url>https://repo.portalBlockz.net</url>
-        </repository>
+        </repository-->
         <repository>
             <!--RedisBungee repo-->
             <id>md_5-snapshots</id>
@@ -86,9 +86,6 @@
                         <manifestEntries>
                             <Built-By>portalBlock</Built-By>
                         </manifestEntries>
-                        <manifest>
-                            <mainClass></mainClass>
-                        </manifest>
                     </archive>
                 </configuration>
             </plugin>

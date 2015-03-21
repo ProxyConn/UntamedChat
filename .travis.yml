@@ -3,8 +3,6 @@ jdk:
   - oraclejdk7
 notifications:
   email: false
-before_script:
-  - chmod +x init.sh
 install:
   - sudo mkdir lib && sudo wget http://www.spigotmc.org/resources/bungee-admin-tools.444/download?version=9384 -O lib/BAT.jar
   - mvn clean package

@@ -8,10 +8,7 @@
 package net.portalblock.untamedchat.bungee;
 
 import net.md_5.bungee.api.plugin.Plugin;
-import net.portalblock.untamedchat.bungee.commands.GlobalChatCommand;
-import net.portalblock.untamedchat.bungee.commands.MsgCommand;
-import net.portalblock.untamedchat.bungee.commands.ReplyCommand;
-import net.portalblock.untamedchat.bungee.commands.SocialSpyCommand;
+import net.portalblock.untamedchat.bungee.commands.*;
 import net.portalblock.untamedchat.bungee.handlers.BATHandler;
 import net.portalblock.untamedchat.bungee.handlers.Handler;
 import net.portalblock.untamedchat.bungee.handlers.NullHandler;
@@ -46,6 +43,7 @@ public class UntamedChat extends Plugin {
         getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new SocialSpyCommand(provider));
+        getProxy().getPluginManager().registerCommand(this, new UCReloadCommand());
 
         getProxy().getPluginManager().registerListener(this, new GeneralListener(provider, handler));
     }
@@ -55,10 +53,10 @@ public class UntamedChat extends Plugin {
     }
 
     private void setProvider(){
-        /*if(getProxy().getPluginManager().getPlugin("ProxyConn") != null){
+        if(getProxy().getPluginManager().getPlugin("ProxyConn") != null){
             provider = new ProxyConnProvider();
             return;
-        }*/
+        }
         if(getProxy().getPluginManager().getPlugin("RedisBungee") != null){
             provider = new RedisBungeeProvider();
             return;
@@ -67,10 +65,11 @@ public class UntamedChat extends Plugin {
     }
 
     private void setHandler(){
-        if(getProxy().getPluginManager().getPlugin("BungeeAdminTools") != null){
+        /*if(getProxy().getPluginManager().getPlugin("BungeeAdminTools") != null){
             handler = new BATHandler(getProxy().getPluginManager().getPlugin("BungeeAdminTools"));
         }else{
             handler = new NullHandler();
-        }
+        }*/
+        handler = new NullHandler();
     }
 }

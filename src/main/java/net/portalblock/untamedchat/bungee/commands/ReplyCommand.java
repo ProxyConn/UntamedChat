@@ -16,6 +16,7 @@ import net.md_5.bungee.api.plugin.TabExecutor;
 import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.data.Message;
 import net.portalblock.untamedchat.bungee.data.Target;
+import net.portalblock.untamedchat.bungee.namesync.NameSyncManager;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
@@ -24,10 +25,12 @@ import net.portalblock.untamedchat.bungee.providers.Provider;
 public class ReplyCommand extends Command implements TabExecutor{
 
     private Provider provider;
+    private NameSyncManager nameSyncManager;
 
-    public ReplyCommand(Provider provider){
+    public ReplyCommand(Provider provider, NameSyncManager nameSyncManager){
         super(UCConfig.getRootForReply(), "untamedchat.reply", UCConfig.getReplyAliases());
         this.provider = provider;
+        this.nameSyncManager = nameSyncManager;
     }
 
     @Override
@@ -48,13 +51,15 @@ public class ReplyCommand extends Command implements TabExecutor{
         }
         String msg = msgBuilder.toString().trim();
         String server = "CONSOLE";
+        String senderName = sender.getName();
         if(sender instanceof ProxiedPlayer){
             server = (((ProxiedPlayer)sender).getServer() != null ? ((ProxiedPlayer)sender).getServer().getInfo().getName() : "Connecting");
+            senderName = nameSyncManager.compileName(((ProxiedPlayer)sender).getUniqueId(), sender.getName());
         }
-        String mg = UCConfig.compileMessage(UCConfig.TARGET_FORMAT, msg, server, sender.getName(), targetName);
-        mg = ChatColor.translateAlternateColorCodes('&', mg);
-        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.PLAYER, targetName), msg, mg));
-        mg = UCConfig.compileMessage(UCConfig.SENDER_FORMAT, msg, server, sender.getName(), targetName);
+        /*String mg = UCConfig.compileMessage(UCConfig.TARGET_FORMAT, msg, server, sender.getName(), targetName);
+        mg = ChatColor.translateAlternateColorCodes('&', mg);*/
+        provider.sendMessage(new Message(senderName, new Target(Target.Kind.PLAYER, targetName), msg, server));
+        String mg = UCConfig.compileMessage(UCConfig.SENDER_FORMAT, msg, server, senderName, targetName);
         mg = ChatColor.translateAlternateColorCodes('&', mg);
         sender.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', mg)));
 

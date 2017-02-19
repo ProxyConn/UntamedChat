@@ -78,9 +78,12 @@ public class RedisBungeeProvider implements Provider, Listener {
                         for (Map.Entry<UUID, Boolean> entry : spying.entrySet()) {
                             if (entry.getValue()) {
                                 ProxiedPlayer player1 = ProxyServer.getInstance().getPlayer(entry.getKey());
-
-                                if (player1 != null)
+                                if (player1 != null) {
+                                    if(player1.getName().equalsIgnoreCase(message.getSender()) ||
+                                            player1.getName().equalsIgnoreCase(message.getTarget().getTarget()))
+                                        continue;
                                     player1.sendMessage(TextComponent.fromLegacyText(ChatColor.translateAlternateColorCodes('&', ssMsg)));
+                                }
                             }
                         }
                     }

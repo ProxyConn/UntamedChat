@@ -17,6 +17,7 @@ import net.portalblock.untamedchat.bungee.CooldownManager;
 import net.portalblock.untamedchat.bungee.UCConfig;
 import net.portalblock.untamedchat.bungee.data.Message;
 import net.portalblock.untamedchat.bungee.data.Target;
+import net.portalblock.untamedchat.bungee.namesync.NameSyncManager;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 
 /**
@@ -28,10 +29,12 @@ public class GlobalChatCommand extends Command implements TabExecutor {
     private static final String TO_FALSE = "&cYou have exited global chat mode!";
 
     private Provider provider;
+    private NameSyncManager nameSyncManager;
 
-    public GlobalChatCommand(Provider provider) {
+    public GlobalChatCommand(Provider provider, NameSyncManager nameSyncManager) {
         super(UCConfig.getRootForGlobal(), "untamedchat.globalchat", UCConfig.getGlobalAliases());
         this.provider = provider;
+        this.nameSyncManager = nameSyncManager;
     }
 
     @Override
@@ -64,10 +67,12 @@ public class GlobalChatCommand extends Command implements TabExecutor {
             preprocessed = ChatColor.stripColor(ChatColor.translateAlternateColorCodes('&', preprocessed));
         }
         String server = "CONSOLE";
+        String senderName = sender.getName();
         if(sender instanceof ProxiedPlayer){
             server = (((ProxiedPlayer)sender).getServer() != null ? ((ProxiedPlayer)sender).getServer().getInfo().getName() : null);
+            senderName = nameSyncManager.compileName(((ProxiedPlayer)sender).getUniqueId(), sender.getName());
         }
-        provider.sendMessage(new Message(sender.getName(), new Target(Target.Kind.GLOBAL, ""), preprocessed, server));
+        provider.sendMessage(new Message(senderName, new Target(Target.Kind.GLOBAL, ""), preprocessed, server));
     }
 
     @Override

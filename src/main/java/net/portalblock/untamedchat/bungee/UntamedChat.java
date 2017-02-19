@@ -12,6 +12,8 @@ import net.portalblock.untamedchat.bungee.commands.*;
 import net.portalblock.untamedchat.bungee.handlers.BATHandler;
 import net.portalblock.untamedchat.bungee.handlers.Handler;
 import net.portalblock.untamedchat.bungee.handlers.NullHandler;
+import net.portalblock.untamedchat.bungee.namesync.NameMessageListener;
+import net.portalblock.untamedchat.bungee.namesync.NameSyncManager;
 import net.portalblock.untamedchat.bungee.providers.BungeeCordProvider;
 import net.portalblock.untamedchat.bungee.providers.Provider;
 import net.portalblock.untamedchat.bungee.providers.ProxyConnProvider;
@@ -33,19 +35,23 @@ public class UntamedChat extends Plugin {
 
     private Provider provider;
     private Handler handler;
+    private NameSyncManager nameSyncManager = new NameSyncManager();
 
     @Override
     public void onEnable() {
         instance = this;
         setProvider();
         setHandler();
-        getProxy().getPluginManager().registerCommand(this, new MsgCommand(provider));
-        getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider));
-        getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider));
+        getProxy().getPluginManager().registerCommand(this, new MsgCommand(provider, nameSyncManager));
+        getProxy().getPluginManager().registerCommand(this, new ReplyCommand(provider, nameSyncManager));
+        getProxy().getPluginManager().registerCommand(this, new GlobalChatCommand(provider, nameSyncManager));
         getProxy().getPluginManager().registerCommand(this, new SocialSpyCommand(provider));
         getProxy().getPluginManager().registerCommand(this, new UCReloadCommand());
 
         getProxy().getPluginManager().registerListener(this, new GeneralListener(provider, handler));
+        getProxy().getPluginManager().registerListener(this, new NameMessageListener(nameSyncManager));
+
+        getProxy().registerChannel("uc-namesync");
     }
 
     public void updateHandler(Handler handler){
